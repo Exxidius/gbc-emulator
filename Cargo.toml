@@ -2,3 +2,8 @@
 name = "gbc-emulator"
 version = "0.1.0"
 edition = "2024"
+
+[dependencies]
+clap = "4.5.51"
+eframe = "0.33.2"
+egui = "0.33.2"
