@@ -36,16 +36,11 @@ impl eframe::App for emulator::Emulator {
 
             let painter = ui.painter();
 
-            painter.rect_filled(rect, 0.0, egui::Color32::from_rgb(155, 188, 15));
-
             let scale = 2.0;
-            for y in 0..144 {
-                for x in 0..160 {
-                    let color = if (x / 8 + y / 8) % 2 == 0 {
-                        egui::Color32::from_rgb(15, 56, 15)
-                    } else {
-                        egui::Color32::from_rgb(155, 188, 15)
-                    };
+            for y in 0..emulator::SCREEN_HEIGHT {
+                for x in 0..emulator::SCREEN_WIDTH {
+                    let (r, g, b, _a) = self.get_pixel_color(x, y);
+                    let color = egui::Color32::from_rgb(r, g, b);
 
                     let pos =
                         egui::pos2(rect.min.x + x as f32 * scale, rect.min.y + y as f32 * scale);
@@ -56,6 +51,8 @@ impl eframe::App for emulator::Emulator {
                     );
                 }
             }
+            // use for repaint e.g. draw call for gbc
+            ctx.request_repaint();
         });
     }
 }
