@@ -1,15 +1,9 @@
 # GBC Emulator
-A GBC emulator (to be) written in C++.
+A GBC emulator (to be) written in Rust (not C++).
 
 ## Installation
-To install the emulator run the following commands in the root directory of the emulator.
-```
-mkdir build
-cd build
-cmake ..
-make
-```
-To clean the sourcetree from build files you can simply delete the build folder again.
+To install the emulator run the following command in the root directory of the emulator ``cargo build``.
+To clean the sourcetree run ``cargo clean``.
 
 ## Usage
 After the installation the emulator can be run with the following command.
