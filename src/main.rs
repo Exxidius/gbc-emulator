@@ -1,6 +1,19 @@
-mod emulator;
+mod core;
+mod ui;
 
-fn main() -> Result<(), eframe::Error> {
-    let _emulator = emulator::Emulator::new()?;
-    Ok(())
+use ui::app::GBCApp;
+
+fn main() -> eframe::Result<()> {
+    let options = eframe::NativeOptions {
+        viewport: egui::ViewportBuilder::default()
+            .with_inner_size([500.0, 700.0])
+            .with_resizable(false),
+        ..Default::default()
+    };
+
+    eframe::run_native(
+        "GBC Emulator",
+        options,
+        Box::new(|_cc| Ok(Box::<GBCApp>::default())),
+    )
 }
