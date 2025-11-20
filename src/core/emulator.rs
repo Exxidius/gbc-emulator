@@ -1,13 +1,14 @@
-use crate::core::{cartridge, cpu, ppu};
+use crate::core::{cartridge, cpu, ppu, timer};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
 
 #[derive(Debug, Clone)]
 pub struct Emulator {
-    pub cpu: Arc<Mutex<cpu::Cpu>>,
+    pub cpu: Arc<cpu::Cpu>,
     pub cartridge: Arc<Mutex<cartridge::Cartridge>>,
     pub ppu: Arc<Mutex<ppu::Ppu>>,
+    pub timer: Arc<timer::Timer>,
     pub state: Arc<EmulatorState>,
 }
 
@@ -20,14 +21,16 @@ pub struct EmulatorState {
 impl Emulator {
     pub fn new() -> Self {
         let ppu = Arc::new(Mutex::new(ppu::Ppu::new()));
-        let cpu = Arc::new(Mutex::new(cpu::Cpu::new()));
+        let cpu = Arc::new(cpu::Cpu::new());
         let cartridge = Arc::new(Mutex::new(cartridge::Cartridge::new()));
+        let timer = Arc::new(timer::Timer::new());
         let state = Arc::new(EmulatorState::default());
 
         let emulator = Self {
             cpu: cpu.clone(),
             cartridge: cartridge.clone(),
             ppu: ppu.clone(),
+            timer: timer.clone(),
             state: state.clone(),
         };
 
@@ -47,9 +50,8 @@ impl Emulator {
     }
 
     pub fn tick(&self) {
-        if let Ok(mut cpu) = self.cpu.lock() {
-            cpu.tick();
-        };
+        self.cpu.tick();
+        self.timer.tick();
     }
 
     pub fn is_paused(&self) -> bool {

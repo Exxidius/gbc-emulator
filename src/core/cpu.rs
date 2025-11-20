@@ -1,14 +1,28 @@
-#[derive(Debug, Clone)]
+use crate::core::types::{Reg16Bit, UnifiedReg16Bit};
+
+#[derive(Debug)]
 pub struct Cpu {
-    test: u8,
+    af: UnifiedReg16Bit,
+    bc: UnifiedReg16Bit,
+    de: UnifiedReg16Bit,
+    hl: UnifiedReg16Bit,
+
+    sp: Reg16Bit,
+    pc: Reg16Bit,
 }
 
 impl Cpu {
     pub fn new() -> Self {
-        Self { test: 0 }
+        Self {
+            af: UnifiedReg16Bit::new(0),
+            bc: UnifiedReg16Bit::new(0),
+            de: UnifiedReg16Bit::new(0),
+            hl: UnifiedReg16Bit::new(0),
+
+            sp: Reg16Bit::new(0),
+            pc: Reg16Bit::new(0),
+        }
     }
 
-    pub fn tick(&mut self) {
-        self.test = 1;
-    }
+    pub fn tick(&self) {}
 }
