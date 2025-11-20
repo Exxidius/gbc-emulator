@@ -42,6 +42,7 @@ impl eframe::App for GBCApp {
         egui::CentralPanel::default().show(ctx, |ui| {
             let mut img = egui::ColorImage::default();
             if let Ok(ppu) = self.emulator.ppu.lock() {
+                // TODO: make faster
                 img = egui::ColorImage::from_rgba_unmultiplied([160, 144], &ppu.to_rgba_flat());
             }
 
