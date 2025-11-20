@@ -1,11 +1,13 @@
-use crate::core::ppu::Ppu;
+use crate::core::{cartridge, cpu, ppu};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread;
 
 #[derive(Debug, Clone)]
 pub struct Emulator {
-    pub ppu: Arc<Mutex<Ppu>>,
+    pub cpu: Arc<Mutex<cpu::Cpu>>,
+    pub cartridge: Arc<Mutex<cartridge::Cartridge>>,
+    pub ppu: Arc<Mutex<ppu::Ppu>>,
     pub state: Arc<EmulatorState>,
 }
 
@@ -17,10 +19,14 @@ pub struct EmulatorState {
 
 impl Emulator {
     pub fn new() -> Self {
-        let ppu = Arc::new(Mutex::new(Ppu::new()));
+        let ppu = Arc::new(Mutex::new(ppu::Ppu::new()));
+        let cpu = Arc::new(Mutex::new(cpu::Cpu::new()));
+        let cartridge = Arc::new(Mutex::new(cartridge::Cartridge::new()));
         let state = Arc::new(EmulatorState::default());
 
         let emulator = Self {
+            cpu: cpu.clone(),
+            cartridge: cartridge.clone(),
             ppu: ppu.clone(),
             state: state.clone(),
         };
@@ -33,26 +39,17 @@ impl Emulator {
         thread::spawn(move || {
             loop {
                 if !emu_clone.is_paused() {
-                    emu_clone.run();
+                    emu_clone.tick();
                 }
                 thread::sleep(std::time::Duration::from_millis(1));
             }
         });
     }
 
-    pub fn run(&self) {
-        let x = rand::random_range(0..160);
-        let y = rand::random_range(0..144);
-        let color = crate::core::ppu::Color {
-            r: rand::random_range(0..=255),
-            g: rand::random_range(0..=255),
-            b: rand::random_range(0..=255),
-            a: 0xff,
+    pub fn tick(&self) {
+        if let Ok(mut cpu) = self.cpu.lock() {
+            cpu.tick();
         };
-
-        if let Ok(mut ppu) = self.ppu.lock() {
-            ppu.set_pixel(x, y, color);
-        }
     }
 
     pub fn is_paused(&self) -> bool {

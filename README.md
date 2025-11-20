@@ -1,5 +1,5 @@
-# GBC Emulator
-A GBC emulator (to be) written in Rust (not C++).
+# Game Boy Color Emulator
+A Game Boy Color emulator (to be) written in Rust (not C++).
 
 ## Installation
 To install the emulator run the following command in the root directory of the emulator ``cargo build``.

@@ -12,7 +12,7 @@ fn main() -> eframe::Result<()> {
     };
 
     eframe::run_native(
-        "GBC Emulator",
+        "Game Boy Color Emulator",
         options,
         Box::new(|_cc| Ok(Box::<GBCApp>::default())),
     )
