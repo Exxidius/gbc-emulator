@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 4.0)
 
-project(gbc)
+project(GBemulator)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -19,7 +19,7 @@ set(IMGUI_SOURCES
 )
 
 add_executable(
-    gbc
+    GBemulator
     src/main.cpp
     src/emulator.cpp
     src/renderer.cpp
@@ -27,9 +27,9 @@ add_executable(
     ${IMGUI_SOURCES}
 )
 
-target_include_directories(gbc PRIVATE
+target_include_directories(GBemulator PRIVATE
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
 )
 
-target_link_libraries(gbc PRIVATE SDL3::SDL3)
+target_link_libraries(GBemulator PRIVATE SDL3::SDL3)

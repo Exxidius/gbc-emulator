@@ -1,5 +1,5 @@
-# Game Boy Color Emulator
-A Game Boy Color emulator (to be) written in C++.
+# Game Boy (Color) Emulator
+A Game Boy (Color) emulator (to be) written in C++.
 
 ## Installation
 To install the emulator run the following commands in the root directory of the emulator.
@@ -13,7 +13,7 @@ make
 ## Usage
 After the installation the emulator can be run with the following command.
 ```
-./GBCemulator <rom>
+./GBemulator <rom>
 ```
 
 ## Resources
