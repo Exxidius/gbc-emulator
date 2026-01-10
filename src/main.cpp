@@ -1,7 +1,13 @@
-#include "imgui.h"
-#include "imgui_impl_sdl2.h"
-#include "imgui_impl_sdlrenderer2.h"
-#include <SDL.h>
+#include "../include/emulator.h"
 #include <iostream>
 
-int main() { std::printf("Hello World!\n"); }
+int main() {
+  Emulator e;
+  try {
+    e.run();
+  } catch (const std::exception &ex) {
+    std::cout << ex.what() << "\n";
+    return 1;
+  }
+  return 0;
+}

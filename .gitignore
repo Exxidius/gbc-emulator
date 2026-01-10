@@ -1,2 +1,8 @@
 build
+
+.cache/
+.clangd/
+compile_commands.json
+
 .tasks
+.DS_Store
