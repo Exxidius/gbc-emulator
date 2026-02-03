@@ -3,9 +3,6 @@
 #include <memory>
 #include <vector>
 
-const int window_width = 1280;
-const int window_height = 720;
-
 struct SDLWindowDestroyer {
   inline void operator()(SDL_Window *w) const { SDL_DestroyWindow(w); }
 };
@@ -30,7 +27,7 @@ struct Context {
   std::unique_ptr<SDL_Renderer, SDLRendererDestroyer> renderer;
   std::unique_ptr<SDL_Texture, SDLTextureDestroyer> texture;
 
-  Context(int width, int height);
+  Context(int width_win, int height_win, int width_tex, int height_tex);
 };
 
 struct ImGuiSystem {
@@ -39,11 +36,16 @@ struct ImGuiSystem {
 };
 
 class Renderer {
-  Context ctx;
-  ImGuiSystem imgui;
-
+  const int scale = 4;
+  const int padding = 5;
+  const int imgui_width = 150;
+  int texture_width;
+  int texture_height;
   int display_width;
   int display_height;
+
+  Context ctx;
+  ImGuiSystem imgui;
 
 public:
   Renderer(size_t width, size_t height);
