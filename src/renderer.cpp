@@ -23,13 +23,14 @@ Context::Context(int width_win, int height_win, int width_tex, int height_tex) {
     throw std::runtime_error("Failed to create renderer");
   }
 
-  texture.reset(SDL_CreateTexture(renderer.get(), SDL_PIXELFORMAT_RGBA32,
+  texture.reset(SDL_CreateTexture(renderer.get(), SDL_PIXELFORMAT_RGBA8888,
                                   SDL_TEXTUREACCESS_STREAMING, width_tex,
                                   height_tex));
   if (!texture) {
     throw std::runtime_error("Failed to create texture");
   }
   SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_NONE);
+  SDL_SetTextureScaleMode(texture.get(), SDL_SCALEMODE_NEAREST);
 }
 
 ImGuiSystem::ImGuiSystem(SDL_Window *w, SDL_Renderer *r) {
@@ -59,7 +60,7 @@ Renderer::Renderer(size_t width, size_t height)
           texture_height / scale),
       imgui(ctx.window.get(), ctx.renderer.get()) {}
 
-void Renderer::draw(const std::vector<uint32_t> &pixels) {
+void Renderer::Draw(const std::vector<uint32_t> &pixels) {
   SDL_UpdateTexture(ctx.texture.get(), nullptr, pixels.data(),
                     texture_width / scale * sizeof(uint32_t));
 
@@ -72,7 +73,8 @@ void Renderer::draw(const std::vector<uint32_t> &pixels) {
   ImGui::SetNextWindowPos(ImVec2(padding, padding));
   ImGui::SetNextWindowSize(ImVec2(imgui_width, texture_height),
                            ImGuiCond_Appearing);
-  ImGui::Begin("Window 1", nullptr, window_flags);
+  ImGui::Begin("Info", nullptr, window_flags);
+  ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
   ImGui::End();
 
   ImGui::SetNextWindowPos(

@@ -1,15 +1,11 @@
 #include "../include/emulator.h"
+#include <iostream>
 
-void Emulator::run() {
-
+void Emulator::Run() {
   bool running = true;
   while (running) {
     running = inputhandler.processInput();
-
-    for (auto &p : pixels) {
-      p = (rand() % 0xFF000000) | 0xFF;
-    }
-
     this->renderer.draw(pixels);
+    SDL_Delay(1000.f / GB_FRAMERATE);
   }
 }
