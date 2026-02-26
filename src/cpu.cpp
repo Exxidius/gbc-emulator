@@ -1,4 +1,5 @@
 #include "../include/cpu.h"
+#include <stdexcept>
 
 CPU::CPU(MMU &mmu) : mmu(mmu) {};
 
@@ -18,6 +19,8 @@ uint16_t CPU::getRegister(RegisterName name) {
     return this->regs.sp;
   case RegisterName::PC:
     return this->regs.pc;
+  default:
+    throw std::runtime_error("Invalid Register");
   }
 }
 
@@ -31,5 +34,7 @@ bool CPU::getFlag(FlagName name) {
     return this->regs.f.h;
   case FlagName::C:
     return this->regs.f.c;
+  default:
+    throw std::runtime_error("Invalid Flag");
   }
 }
