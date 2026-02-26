@@ -5,15 +5,15 @@
 #include <vector>
 
 struct SDLWindowDestroyer {
-  inline void operator()(SDL_Window *w) const { SDL_DestroyWindow(w); }
+  void operator()(SDL_Window *w) const { SDL_DestroyWindow(w); }
 };
 
 struct SDLRendererDestroyer {
-  inline void operator()(SDL_Renderer *r) const { SDL_DestroyRenderer(r); }
+  void operator()(SDL_Renderer *r) const { SDL_DestroyRenderer(r); }
 };
 
 struct SDLTextureDestroyer {
-  inline void operator()(SDL_Texture *t) const { SDL_DestroyTexture(t); }
+  void operator()(SDL_Texture *t) const { SDL_DestroyTexture(t); }
 };
 
 struct SDLSystem {

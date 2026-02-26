@@ -33,7 +33,7 @@ void Debugger::drawCPU() const {
 
   ImGui::Text("Flags");
   if (ImGui::BeginTable("flags", 2)) {
-    std::string flagnames[6] = {"z", "n", "h", "c"};
+    std::string flagnames[4] = {"z", "n", "h", "c"};
     for (int curr = FlagName::Z; curr <= FlagName::C; curr++) {
       ImGui::TableNextRow();
       ImGui::TableNextColumn();

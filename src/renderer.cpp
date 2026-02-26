@@ -18,7 +18,7 @@ Context::Context(int width_win, int height_win, int width_tex, int height_tex) {
     throw std::runtime_error("Failed to create window");
   }
 
-  renderer.reset(SDL_CreateRenderer(window.get(), NULL));
+  renderer.reset(SDL_CreateRenderer(window.get(), nullptr));
   if (!renderer) {
     throw std::runtime_error("Failed to create renderer");
   }
@@ -74,7 +74,7 @@ void Renderer::draw(const std::vector<uint32_t> &pixels,
   ImGui::SetNextWindowPos(ImVec2(padding, padding));
   ImGui::SetNextWindowSize(ImVec2(imgui_width, texture_height),
                            ImGuiCond_Appearing);
-  ImGui::Begin("Debug Information", nullptr, window_flags);
+  ImGui::Begin("Emulator Info", nullptr, window_flags);
   ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
   ImGui::End();
 
