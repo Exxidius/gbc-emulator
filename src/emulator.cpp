@@ -7,7 +7,7 @@ void Emulator::run() {
 
     this->cpu.step();
 
-    this->renderer.draw(pixels);
+    this->renderer.draw(pixels, this->debugger);
     SDL_Delay(1000.f / GB_FRAMERATE);
   }
 }

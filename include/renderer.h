@@ -1,4 +1,5 @@
 #pragma once
+#include "debugger.h"
 #include <SDL3/SDL.h>
 #include <memory>
 #include <vector>
@@ -49,5 +50,5 @@ class Renderer {
 
 public:
   Renderer(size_t width, size_t height);
-  void draw(const std::vector<uint32_t> &pixels);
+  void draw(const std::vector<uint32_t> &pixels, const Debugger &debugger);
 };

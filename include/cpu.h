@@ -4,8 +4,11 @@
 
 class CPU {
 public:
-  CPU(MMU &mmu) : mmu(mmu) {}
-  int step();
+  CPU(MMU &mmu);
+
+  uint8_t step();
+  uint16_t getRegister(RegisterName name);
+  bool getFlag(FlagName name);
 
 private:
   Registers regs;

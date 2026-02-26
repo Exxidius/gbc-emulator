@@ -15,7 +15,7 @@ struct Registers {
       uint8_t a;
       Flags f;
     };
-    uint16_t af;
+    uint16_t af = 0;
   };
 
   union {
@@ -23,7 +23,7 @@ struct Registers {
       uint8_t b;
       uint8_t c;
     };
-    uint16_t bc;
+    uint16_t bc = 0;
   };
 
   union {
@@ -31,7 +31,7 @@ struct Registers {
       uint8_t d;
       uint8_t e;
     };
-    uint16_t de;
+    uint16_t de = 0;
   };
 
   union {
@@ -39,9 +39,12 @@ struct Registers {
       uint8_t h;
       uint8_t l;
     };
-    uint16_t hl;
+    uint16_t hl = 0;
   };
 
-  uint16_t sp;
-  uint16_t pc;
+  uint16_t sp = 0;
+  uint16_t pc = 0;
 };
+
+enum RegisterName { AF, BC, DE, HL, SP, PC };
+enum FlagName { Z, N, H, C };

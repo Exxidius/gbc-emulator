@@ -19,13 +19,19 @@ set(IMGUI_SOURCES
     ${IMGUI_DIR}/backends/imgui_impl_sdlrenderer3.cpp
 )
 
-add_executable(
-    GBemulator
+set(EMULATOR_SOURCES
     src/main.cpp
+    src/mmu.cpp
     src/emulator.cpp
     src/cpu.cpp
     src/renderer.cpp
     src/input_handler.cpp
+    src/debugger.cpp
+)
+
+add_executable(
+    GBemulator
+    ${EMULATOR_SOURCES}
     ${IMGUI_SOURCES}
 )
 

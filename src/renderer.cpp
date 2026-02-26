@@ -60,7 +60,8 @@ Renderer::Renderer(size_t width, size_t height)
           texture_height / scale),
       imgui(ctx.window.get(), ctx.renderer.get()) {}
 
-void Renderer::draw(const std::vector<uint32_t> &pixels) {
+void Renderer::draw(const std::vector<uint32_t> &pixels,
+                    const Debugger &debugger) {
   SDL_UpdateTexture(ctx.texture.get(), nullptr, pixels.data(),
                     texture_width / scale * sizeof(uint32_t));
 
@@ -73,7 +74,7 @@ void Renderer::draw(const std::vector<uint32_t> &pixels) {
   ImGui::SetNextWindowPos(ImVec2(padding, padding));
   ImGui::SetNextWindowSize(ImVec2(imgui_width, texture_height),
                            ImGuiCond_Appearing);
-  ImGui::Begin("Info", nullptr, window_flags);
+  ImGui::Begin("Debug Information", nullptr, window_flags);
   ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
   ImGui::End();
 
@@ -81,8 +82,10 @@ void Renderer::draw(const std::vector<uint32_t> &pixels) {
       ImVec2(imgui_width + texture_width + 3 * padding, padding));
   ImGui::SetNextWindowSize(ImVec2(imgui_width, texture_height),
                            ImGuiCond_Appearing);
-  ImGui::Begin("Window 2", nullptr, window_flags);
+  ImGui::Begin("Controls", nullptr, window_flags);
   ImGui::End();
+
+  debugger.draw();
 
   SDL_FRect dest_rect = {float(imgui_width + 2 * padding), float(padding),
                          float(texture_width), float(texture_height)};
