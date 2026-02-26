@@ -6,7 +6,7 @@ int main() {
   try {
     e.run();
   } catch (const std::exception &ex) {
-    std::cout << ex.what() << "\n";
+    std::cerr << ex.what() << "\n";
     return 1;
   }
   return 0;

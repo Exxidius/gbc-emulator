@@ -4,6 +4,8 @@
 
 class CPU {
 public:
+  CPUState state;
+
   CPU(MMU &mmu);
 
   uint8_t step();

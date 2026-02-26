@@ -18,7 +18,7 @@ Context::Context(int width_win, int height_win, int width_tex, int height_tex) {
     throw std::runtime_error("Failed to create window");
   }
 
-  renderer.reset(SDL_CreateRenderer(window.get(), NULL));
+  renderer.reset(SDL_CreateRenderer(window.get(), nullptr));
   if (!renderer) {
     throw std::runtime_error("Failed to create renderer");
   }
@@ -60,8 +60,7 @@ Renderer::Renderer(size_t width, size_t height)
           texture_height / scale),
       imgui(ctx.window.get(), ctx.renderer.get()) {}
 
-void Renderer::draw(const std::vector<uint32_t> &pixels,
-                    const Debugger &debugger) {
+void Renderer::draw(const std::vector<uint32_t> &pixels) {
   SDL_UpdateTexture(ctx.texture.get(), nullptr, pixels.data(),
                     texture_width / scale * sizeof(uint32_t));
 
@@ -85,13 +84,13 @@ void Renderer::draw(const std::vector<uint32_t> &pixels,
   ImGui::Begin("Controls", nullptr, window_flags);
   ImGui::End();
 
-  debugger.draw();
-
   SDL_FRect dest_rect = {float(imgui_width + 2 * padding), float(padding),
                          float(texture_width), float(texture_height)};
   SDL_RenderClear(ctx.renderer.get());
   SDL_RenderTexture(ctx.renderer.get(), ctx.texture.get(), nullptr, &dest_rect);
+}
 
+void Renderer::render() {
   ImGui::Render();
   ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(),
                                         ctx.renderer.get());

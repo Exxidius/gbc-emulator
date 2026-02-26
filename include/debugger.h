@@ -7,6 +7,7 @@ public:
   Debugger(CPU &cpu, MMU &mmu);
 
   void draw() const;
+  void updateState();
 
 private:
   CPU &cpu;

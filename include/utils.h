@@ -48,3 +48,9 @@ struct Registers {
 
 enum RegisterName { AF, BC, DE, HL, SP, PC };
 enum FlagName { Z, N, H, C };
+
+struct CPUState {
+  bool running = true;
+  bool paused = true;
+  bool step_mode = false;
+};

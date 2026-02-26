@@ -33,7 +33,7 @@ void Debugger::drawCPU() const {
 
   ImGui::Text("Flags");
   if (ImGui::BeginTable("flags", 2)) {
-    std::string flagnames[6] = {"z", "n", "h", "c"};
+    std::string flagnames[4] = {"z", "n", "h", "c"};
     for (int curr = FlagName::Z; curr <= FlagName::C; curr++) {
       ImGui::TableNextRow();
       ImGui::TableNextColumn();
@@ -44,4 +44,25 @@ void Debugger::drawCPU() const {
     ImGui::EndTable();
   }
   ImGui::Separator();
+}
+
+void Debugger::updateState() {
+  ImGui::Begin("Controls");
+  std::string label = "";
+  if (cpu.state.paused && cpu.state.step_mode) {
+    label = "Step";
+  } else if (cpu.state.paused) {
+    label = "Resume";
+  } else {
+    label = "Pause";
+  }
+  if (ImGui::Button(label.c_str(), ImVec2(-1.0f, 0))) {
+    cpu.state.paused = !cpu.state.paused;
+  }
+  if (ImGui::Button(cpu.state.step_mode ? "Exit Step Mode" : "Enter Step Mode",
+                    ImVec2(-1.0f, 0))) {
+    cpu.state.step_mode = !cpu.state.step_mode;
+    cpu.state.paused = true;
+  }
+  ImGui::End();
 }

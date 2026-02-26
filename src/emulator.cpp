@@ -1,13 +1,21 @@
 #include "../include/emulator.h"
 
 void Emulator::run() {
-  bool running = true;
-  while (running) {
-    running = inputhandler.processInput();
+  while (cpu.state.running) {
+    cpu.state.running = inputhandler.processInput();
 
-    this->cpu.step();
+    if (!cpu.state.paused) {
+      uint8_t cycles = this->cpu.step();
 
-    this->renderer.draw(pixels, this->debugger);
+      if (cpu.state.step_mode) {
+        cpu.state.paused = true;
+      }
+    }
+
+    this->renderer.draw(pixels);
+    this->debugger.draw();
+    this->debugger.updateState();
+    this->renderer.render();
     SDL_Delay(1000.f / GB_FRAMERATE);
   }
 }
