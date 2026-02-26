@@ -1,4 +1,5 @@
 #pragma once
+#include "constants.h"
 #include <stdint.h>
 #include <vector>
 
@@ -10,7 +11,11 @@ public:
   void writeVRAM(uint16_t addr, uint8_t value);
   void writeOAM(uint16_t addr, uint8_t value);
 
+  std::vector<uint32_t> &getPixels();
+
 private:
   std::vector<uint8_t> vram = std::vector<uint8_t>(0x2000, 0);
   std::vector<uint8_t> oam = std::vector<uint8_t>(0x9F, 0);
+  std::vector<uint32_t> pixels =
+      std::vector<uint32_t>(GB_WIDTH * GB_HEIGHT, GB_LIGHT_GREEN);
 };

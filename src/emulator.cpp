@@ -17,7 +17,7 @@ void Emulator::run() {
       }
     }
 
-    this->renderer.draw(pixels);
+    this->renderer.draw(this->ppu.getPixels());
     this->debugger.draw();
     this->debugger.updateState();
     this->renderer.render();
@@ -30,7 +30,6 @@ void Emulator::run() {
       }
 
       uint64_t remaining_ns = target_end_time - current_time;
-
       if (remaining_ns > sleep_margin_ns) {
         SDL_DelayNS(remaining_ns - sleep_margin_ns);
       }

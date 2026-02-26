@@ -1,14 +1,9 @@
 #pragma once
+#include "constants.h"
 #include "cpu.h"
 #include "input_handler.h"
 #include "mmu.h"
 #include "renderer.h"
-#include <vector>
-
-const int GB_WIDTH = 160;
-const int GB_HEIGHT = 144;
-const float GB_FRAMERATE = 59.73;
-const uint32_t GB_GREEN = 0x9BBC0FFF;
 
 class Emulator {
 public:
@@ -28,7 +23,4 @@ private:
   Renderer renderer = Renderer(GB_WIDTH, GB_HEIGHT);
   InputHandler inputhandler = InputHandler();
   Debugger debugger = Debugger(cpu, mmu);
-
-  std::vector<uint32_t> pixels =
-      std::vector<uint32_t>(GB_WIDTH * GB_HEIGHT, GB_GREEN);
 };
