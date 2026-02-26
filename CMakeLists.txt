@@ -22,6 +22,8 @@ set(IMGUI_SOURCES
 set(EMULATOR_SOURCES
     src/main.cpp
     src/mmu.cpp
+    src/ppu.cpp
+    src/cartridge.cpp
     src/emulator.cpp
     src/cpu.cpp
     src/renderer.cpp

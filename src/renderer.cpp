@@ -74,7 +74,7 @@ void Renderer::draw(const std::vector<uint32_t> &pixels) {
   ImGui::SetNextWindowSize(ImVec2(imgui_width, texture_height),
                            ImGuiCond_Appearing);
   ImGui::Begin("Debug Information", nullptr, window_flags);
-  ImGui::Text("FPS: %f", ImGui::GetIO().Framerate);
+  ImGui::Text("FPS: %.2f", ImGui::GetIO().Framerate);
   ImGui::End();
 
   ImGui::SetNextWindowPos(
