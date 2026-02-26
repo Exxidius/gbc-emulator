@@ -49,5 +49,5 @@ class Renderer {
 
 public:
   Renderer(size_t width, size_t height);
-  void Draw(const std::vector<uint32_t> &pixels);
+  void draw(const std::vector<uint32_t> &pixels);
 };

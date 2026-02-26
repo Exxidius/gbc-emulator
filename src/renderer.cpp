@@ -60,7 +60,7 @@ Renderer::Renderer(size_t width, size_t height)
           texture_height / scale),
       imgui(ctx.window.get(), ctx.renderer.get()) {}
 
-void Renderer::Draw(const std::vector<uint32_t> &pixels) {
+void Renderer::draw(const std::vector<uint32_t> &pixels) {
   SDL_UpdateTexture(ctx.texture.get(), nullptr, pixels.data(),
                     texture_width / scale * sizeof(uint32_t));
 
