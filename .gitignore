@@ -6,3 +6,5 @@ compile_commands.json
 
 .tasks
 .DS_Store
+
+_codeql_detected_source_root
