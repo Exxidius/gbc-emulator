@@ -9,12 +9,19 @@ void Emulator::run() {
     uint64_t target_end_time = frame_start_time + target_frame_time_ns;
     cpu.state.running = inputhandler.processInput();
 
-    if (!cpu.state.paused) {
-      uint8_t cycles = this->cpu.step();
+    int cycles_this_frame = 0;
+
+    while (cycles_this_frame < GB_CYCLES_PER_FRAME && !cpu.state.paused) {
+      uint8_t cycles = 0;
+      cycles = this->cpu.step();
+
+      this->ppu.tick(cycles);
+      this->timer.tick(cycles);
 
       if (cpu.state.step_mode) {
         cpu.state.paused = true;
       }
+      cycles_this_frame += cycles;
     }
 
     this->renderer.draw(this->ppu.getPixels());

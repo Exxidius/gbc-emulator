@@ -29,6 +29,7 @@ set(EMULATOR_SOURCES
     src/renderer.cpp
     src/input_handler.cpp
     src/debugger.cpp
+    src/timer.cpp
 )
 
 add_executable(

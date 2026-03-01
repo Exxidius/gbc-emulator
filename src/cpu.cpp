@@ -3,7 +3,10 @@
 
 CPU::CPU(MMU &mmu) : mmu(mmu) {};
 
-uint8_t CPU::step() { return 0; }
+uint8_t CPU::step() {
+  // this is the step function
+  return 4;
+}
 
 uint16_t CPU::getRegister(RegisterName name) {
   switch (name) {

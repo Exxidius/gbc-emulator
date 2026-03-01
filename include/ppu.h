@@ -10,6 +10,7 @@ public:
 
   void writeVRAM(uint16_t addr, uint8_t value);
   void writeOAM(uint16_t addr, uint8_t value);
+  void tick(uint8_t cycles);
 
   std::vector<uint32_t> &getPixels();
 
