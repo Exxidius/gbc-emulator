@@ -13,7 +13,7 @@ private:
   // Emulator Logic
   PPU ppu;
   APU apu;
-  Cartridge cartridge;
+  Cartridge cartridge = Cartridge("../roms/test.gb");
   Timer timer;
   Joypad joypad;
   MMU mmu = MMU(ppu, cartridge, joypad, timer, apu);

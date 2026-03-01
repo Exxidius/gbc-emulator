@@ -25,6 +25,6 @@ private:
   APU &apu;
 
   std::vector<uint8_t> wram = std::vector<uint8_t>(0x2000, 0);
-  std::vector<uint8_t> hram = std::vector<uint8_t>(0x7E, 0);
+  std::vector<uint8_t> hram = std::vector<uint8_t>(0x7F, 0);
   uint8_t interrupt_register = 0;
 };

@@ -39,7 +39,7 @@ struct ImGuiSystem {
 class Renderer {
   const int scale = 4;
   const int padding = 5;
-  const int imgui_width = 150;
+  const int imgui_width = 335;
   int texture_width;
   int texture_height;
   int display_width;

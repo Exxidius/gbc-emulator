@@ -26,7 +26,7 @@ uint8_t MMU::read(uint16_t addr) {
     return 0xFF;
   }
   if (addr <= 0xFF7F) {
-    this->readIO(addr);
+    return this->readIO(addr);
   }
   if (addr <= 0xFFFE) {
     return hram.at(addr - 0xFF80);
