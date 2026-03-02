@@ -1,6 +1,7 @@
 #pragma once
 #include "mmu.h"
 #include "utils.h"
+#include <functional>
 
 class CPU {
 public:
@@ -9,7 +10,7 @@ public:
     uint8_t length;
     uint8_t cycles;
     uint8_t cycles_alt;
-    void (CPU::*handler)();
+    std::function<void()> handler;
   };
 
   CPUState state;

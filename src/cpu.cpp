@@ -43,8 +43,8 @@ void CPU::setFlag(uint8_t flagMask, bool condition) {
 }
 
 const CPU::OpCode CPU::opcode_table[256] = {
-    {"NOP", 1, 4, 0, &CPU::op_nop},
-    {"LD BC, imm16", 3, 12, 0, &CPU::op_ld_r16_imm16},
+    {"NOP", 1, 4, 0, [this] { this->op_nop(); }},
+    {"LD BC, imm16", 3, 12, 0, [this] { this->op_ld_r16_imm16() }},
 };
 
 const CPU::OpCode CPU::cb_opcode_table[256] = {};
