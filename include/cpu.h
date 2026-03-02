@@ -14,8 +14,8 @@ public:
   };
 
   CPUState state;
-  static const OpCode opcode_table[256];
-  static const OpCode cb_opcode_table[256];
+  OpCode opcodes[256];
+  OpCode cbopcodes[256];
 
   CPU(MMU &mmu);
 
@@ -28,6 +28,8 @@ public:
 private:
   Registers regs;
   MMU &mmu;
+
+  void initOpCodeTable();
 
   void op_nop();
 

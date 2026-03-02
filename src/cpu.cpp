@@ -5,9 +5,13 @@ CPU::CPU(MMU &mmu) : mmu(mmu) {};
 
 uint8_t CPU::step() {
   uint8_t op = mmu.read(regs.pc);
-  const OpCode &instr = opcode_table[op];
+  const OpCode &instr = opcodes[op];
 
-  (this->*instr.handler)();
+  if (instr.handler) {
+    instr.handler();
+  } else {
+    throw std::runtime_error("Unimplemented opcode: " + std::to_string(op));
+  }
 
   regs.pc += instr.length;
   return 4; // swap with cycles later
@@ -42,12 +46,10 @@ void CPU::setFlag(uint8_t flagMask, bool condition) {
   }
 }
 
-const CPU::OpCode CPU::opcode_table[256] = {
-    {"NOP", 1, 4, 0, [this] { this->op_nop(); }},
-    {"LD BC, imm16", 3, 12, 0, [this] { this->op_ld_r16_imm16() }},
-};
-
-const CPU::OpCode CPU::cb_opcode_table[256] = {};
+void CPU::initOpCodeTable() {
+  opcodes[0x00] = {"NOP", 1, 4, 0, [this] { op_nop(); }};
+  opcodes[0x01] = {"LD BC, imm16", 3, 12, 0, [this] { op_ld_r16_imm16(); }};
+}
 
 void CPU::op_nop() {}
 
