@@ -9,6 +9,7 @@ find_package(SDL3 REQUIRED)
 
 # TODO: Outsource to static library later
 set(IMGUI_DIR "${CMAKE_SOURCE_DIR}/thirdparty/imgui")
+set(THIRDPARTY_DIR "${CMAKE_SOURCE_DIR}/thirdparty")
 set(IMGUI_SOURCES
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_demo.cpp
@@ -41,6 +42,7 @@ add_executable(
 target_include_directories(GBemulator PRIVATE
     ${IMGUI_DIR}
     ${IMGUI_DIR}/backends
+    ${THIRDPARTY_DIR}
 )
 
 target_link_libraries(GBemulator PRIVATE SDL3::SDL3)
