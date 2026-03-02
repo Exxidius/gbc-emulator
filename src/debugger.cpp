@@ -43,7 +43,7 @@ void Debugger::drawCPU() const {
       ImGui::TableNextColumn();
       ImGui::Text("%s:", regnames[curr + 3].c_str());
       ImGui::TableNextColumn();
-      ImGui::Text("0x%X", cpu.getRegister(static_cast<RegisterName>(curr + 1)));
+      ImGui::Text("0x%X", cpu.getRegister(static_cast<RegisterName>(curr + 3)));
     }
     ImGui::EndTable();
   }

@@ -29,6 +29,9 @@ void Cartridge::writeExtRAM(uint16_t addr, uint8_t value) {
 
 void Cartridge::load() {
   std::ifstream file(romfile, std::ios::binary | std::ios::ate);
+  if (!file.is_open()) {
+    throw std::runtime_error("Could not open ROM file");
+  }
   int size = file.tellg();
   file.seekg(0, file.beg);
   rom.resize(size);

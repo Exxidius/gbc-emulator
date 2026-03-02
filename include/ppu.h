@@ -16,7 +16,7 @@ public:
 
 private:
   std::vector<uint8_t> vram = std::vector<uint8_t>(0x2000, 0);
-  std::vector<uint8_t> oam = std::vector<uint8_t>(0x9F, 0);
+  std::vector<uint8_t> oam = std::vector<uint8_t>(0xA0, 0);
   std::vector<uint32_t> pixels =
       std::vector<uint32_t>(GB_WIDTH * GB_HEIGHT, GB_LIGHT_GREEN);
 };
