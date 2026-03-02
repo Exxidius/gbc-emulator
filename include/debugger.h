@@ -19,4 +19,5 @@ private:
 
   void drawCPU() const;
   void drawMemory();
+  void drawDisassembly() const;
 };

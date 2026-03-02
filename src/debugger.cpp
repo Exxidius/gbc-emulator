@@ -16,6 +16,10 @@ void Debugger::draw() {
       drawMemory();
       ImGui::EndTabItem();
     }
+    if (ImGui::BeginTabItem("Disassembly")) {
+      drawDisassembly();
+      ImGui::EndTabItem();
+    }
     ImGui::EndTabBar();
   }
   ImGui::End();
@@ -29,6 +33,8 @@ void Debugger::drawMemory() {
 
   mem_edit.DrawContents(full_memory, 0x10000);
 }
+
+void Debugger::drawDisassembly() const {}
 
 void Debugger::drawCPU() const {
   ImGui::SeparatorText("Registers");
@@ -51,16 +57,17 @@ void Debugger::drawCPU() const {
   ImGui::SeparatorText("Flags");
   if (ImGui::BeginTable("flags", 4)) {
     std::string flagnames[4] = {"z", "n", "h", "c"};
-    for (int curr = FlagName::Z; curr <= FlagName::C / 2; curr++) {
+    uint8_t flagmasks[4] = {FLAG_Z, FLAG_N, FLAG_H, FLAG_C};
+    for (int curr = 0; curr <= 1; curr++) {
       ImGui::TableNextRow();
       ImGui::TableNextColumn();
       ImGui::Text("%s:", flagnames[curr].c_str());
       ImGui::TableNextColumn();
-      ImGui::Text("%d", cpu.getFlag(static_cast<FlagName>(curr)));
+      ImGui::Text("%d", cpu.getFlag(flagmasks[curr]));
       ImGui::TableNextColumn();
       ImGui::Text("%s:", flagnames[curr + 2].c_str());
       ImGui::TableNextColumn();
-      ImGui::Text("%d", cpu.getFlag(static_cast<FlagName>(curr + 2)));
+      ImGui::Text("%d", cpu.getFlag(flagmasks[curr + 2]));
     }
     ImGui::EndTable();
   }
