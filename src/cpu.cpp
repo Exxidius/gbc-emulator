@@ -4,7 +4,7 @@
 CPU::CPU(MMU &mmu) : mmu(mmu) {};
 
 uint8_t CPU::step() {
-  uint8_t op = mmu.read(regs.pc);
+  uint8_t op = mmu.read(regs.pc++);
   const OpCode &instr = opcodes[op];
 
   if (instr.handler) {
@@ -13,7 +13,8 @@ uint8_t CPU::step() {
     throw std::runtime_error("Unimplemented opcode: " + std::to_string(op));
   }
 
-  regs.pc += instr.length;
+  // Increase pc with instruction length - opcode byte
+  regs.pc += instr.length - 1;
   return 4; // swap with cycles later
 }
 
@@ -46,14 +47,20 @@ void CPU::setFlag(uint8_t flagMask, bool condition) {
   }
 }
 
+uint8_t CPU::readByte(uint16_t addr) { return mmu.read(addr); }
+
 void CPU::initOpCodeTable() {
   opcodes[0x00] = {"NOP", 1, 4, 0, [this] { op_nop(); }};
-  opcodes[0x01] = {"LD BC, imm16", 3, 12, 0, [this] { op_ld_r16_imm16(); }};
+  opcodes[0x01] = {"LD BC, imm16", 3, 12, 0,
+                   [this] { op_ld_r16_imm16(regs.bc); }};
 }
 
 void CPU::op_nop() {}
 
-void CPU::op_ld_r16_imm16() {}
+void CPU::op_ld_r16_imm16(uint16_t &reg) {
+  uint16_t val = readByte(regs.pc) << 8 | readByte(regs.pc + 1);
+  reg = val;
+}
 
 void CPU::op_ld_r16mem_a() {}
 

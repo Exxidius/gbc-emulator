@@ -29,11 +29,13 @@ private:
   Registers regs;
   MMU &mmu;
 
+  uint8_t readByte(uint16_t addr);
+
   void initOpCodeTable();
 
   void op_nop();
 
-  void op_ld_r16_imm16();
+  void op_ld_r16_imm16(uint16_t &reg);
   void op_ld_r16mem_a();
   void op_ld_a_r16mem();
   void op_ld_imm16mem_sp();
