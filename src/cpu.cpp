@@ -62,7 +62,7 @@ void CPU::initOpCodeTable() {
   opcodes[0x05] = {"DEC B", 1, 4, 0, [this] { op_dec_r8(regs.b); }};
   opcodes[0x06] = {"LD B, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.b); }};
   opcodes[0x07] = {"RLCA", 1, 4, 0, [this] { op_rlca(); }};
-  opcodes[0x08] = {"LD [imm16], SP", 1, 8, 0,
+  opcodes[0x08] = {"LD [imm16], SP", 3, 20, 0,
                    [this] { op_ld_imm16mem_sp(fetchWord()); }};
   opcodes[0x09] = {"ADD HL, BC", 1, 8, 0, [this] { op_add_hl_r16(regs.bc); }};
 }
