@@ -12,9 +12,6 @@ uint8_t CPU::step() {
   } else {
     throw std::runtime_error("Unimplemented opcode: " + std::to_string(op));
   }
-
-  // Increase pc with instruction length - opcode byte
-  regs.pc += instr.length - 1;
   return 4; // swap with cycles later
 }
 
@@ -47,6 +44,14 @@ void CPU::setFlag(uint8_t flagMask, bool condition) {
   }
 }
 
+uint8_t CPU::fetchByte() { return mmu.read(regs.pc++); }
+
+uint16_t CPU::fetchWord() {
+  uint8_t lo = fetchByte();
+  uint8_t hi = fetchByte();
+  return (hi << 8) | lo;
+}
+
 void CPU::initOpCodeTable() {
   opcodes[0x00] = {"NOP", 1, 4, 0, [this] { op_nop(); }};
   opcodes[0x01] = {"LD BC, imm16", 3, 12, 0,
@@ -56,14 +61,14 @@ void CPU::initOpCodeTable() {
   opcodes[0x04] = {"INC B", 1, 4, 0, [this] { op_inc_r8(regs.b); }};
   opcodes[0x05] = {"DEC B", 1, 4, 0, [this] { op_dec_r8(regs.b); }};
   opcodes[0x06] = {"LD B, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.b); }};
+  opcodes[0x07] = {"RLCA", 1, 4, 0, [this] { op_rlca(); }};
+  opcodes[0x08] = {"LD [imm16], SP", 1, 8, 0,
+                   [this] { op_ld_r16mem_a(fetchWord()); }};
 }
 
 void CPU::op_nop() {}
 
-void CPU::op_ld_r16_imm16(uint16_t &reg) {
-  uint16_t val = mmu.read(regs.pc + 1) << 8 | mmu.read(regs.pc);
-  reg = val;
-}
+void CPU::op_ld_r16_imm16(uint16_t &reg) { reg = fetchWord(); }
 
 void CPU::op_ld_r16mem_a(uint16_t addr) { mmu.write(addr, regs.a); }
 

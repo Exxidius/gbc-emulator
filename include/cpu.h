@@ -29,6 +29,9 @@ private:
   Registers regs;
   MMU &mmu;
 
+  uint8_t fetchByte();
+  uint16_t fetchWord();
+
   void initOpCodeTable();
 
   void op_nop();
