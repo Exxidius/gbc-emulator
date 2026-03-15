@@ -63,7 +63,8 @@ void CPU::initOpCodeTable() {
   opcodes[0x06] = {"LD B, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.b); }};
   opcodes[0x07] = {"RLCA", 1, 4, 0, [this] { op_rlca(); }};
   opcodes[0x08] = {"LD [imm16], SP", 1, 8, 0,
-                   [this] { op_ld_r16mem_a(fetchWord()); }};
+                   [this] { op_ld_imm16mem_sp(fetchWord()); }};
+  opcodes[0x09] = {"ADD HL, BC", 1, 8, 0, [this] { op_add_hl_r16(regs.bc); }};
 }
 
 void CPU::op_nop() {}
@@ -83,7 +84,14 @@ void CPU::op_inc_r16(uint16_t &reg) { reg++; }
 
 void CPU::op_dec_r16(uint16_t &reg) { reg--; }
 
-void CPU::op_add_hl_r16(uint16_t &reg) { regs.hl = reg; }
+void CPU::op_add_hl_r16(uint16_t &reg) {
+  uint16_t original = regs.hl;
+  uint32_t result = regs.hl + reg;
+  regs.hl = result & 0xFFFF;
+  setFlag(FLAG_N, 0);
+  setFlag(FLAG_C, result > 0xFFFF);
+  setFlag(FLAG_H, ((original & 0x0FFF) + (reg & 0x0FFF)) > 0x0FFF);
+}
 
 void CPU::op_inc_r8(uint8_t &reg) {
   uint8_t result = reg + 1;
