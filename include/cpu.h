@@ -29,25 +29,23 @@ private:
   Registers regs;
   MMU &mmu;
 
-  uint8_t readByte(uint16_t addr);
-
   void initOpCodeTable();
 
   void op_nop();
 
   void op_ld_r16_imm16(uint16_t &reg);
-  void op_ld_r16mem_a();
-  void op_ld_a_r16mem();
-  void op_ld_imm16mem_sp();
+  void op_ld_r16mem_a(uint16_t addr);
+  void op_ld_a_r16mem(uint16_t addr);
+  void op_ld_imm16mem_sp(uint16_t addr);
 
-  void op_inc_r16();
-  void op_dec_r16();
-  void op_add_hl_r16();
+  void op_inc_r16(uint16_t &reg);
+  void op_dec_r16(uint16_t &reg);
+  void op_add_hl_r16(uint16_t &reg);
 
-  void op_inc_r8();
-  void op_dec_r8();
+  void op_inc_r8(uint8_t &reg);
+  void op_dec_r8(uint8_t &reg);
 
-  void op_ld_r8_imm8();
+  void op_ld_r8_imm8(uint8_t &reg);
 
   void op_rlca();
   void op_rrca();

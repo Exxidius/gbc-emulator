@@ -47,40 +47,66 @@ void CPU::setFlag(uint8_t flagMask, bool condition) {
   }
 }
 
-uint8_t CPU::readByte(uint16_t addr) { return mmu.read(addr); }
-
 void CPU::initOpCodeTable() {
   opcodes[0x00] = {"NOP", 1, 4, 0, [this] { op_nop(); }};
   opcodes[0x01] = {"LD BC, imm16", 3, 12, 0,
                    [this] { op_ld_r16_imm16(regs.bc); }};
+  opcodes[0x02] = {"LD [BC], A", 1, 8, 0, [this] { op_ld_r16mem_a(regs.bc); }};
+  opcodes[0x03] = {"INC BC", 1, 8, 0, [this] { op_inc_r16(regs.bc); }};
+  opcodes[0x04] = {"INC B", 1, 4, 0, [this] { op_inc_r8(regs.b); }};
+  opcodes[0x05] = {"DEC B", 1, 4, 0, [this] { op_dec_r8(regs.b); }};
+  opcodes[0x06] = {"LD B, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.b); }};
 }
 
 void CPU::op_nop() {}
 
 void CPU::op_ld_r16_imm16(uint16_t &reg) {
-  uint16_t val = readByte(regs.pc) << 8 | readByte(regs.pc + 1);
+  uint16_t val = mmu.read(regs.pc + 1) << 8 | mmu.read(regs.pc);
   reg = val;
 }
 
-void CPU::op_ld_r16mem_a() {}
+void CPU::op_ld_r16mem_a(uint16_t addr) { mmu.write(addr, regs.a); }
 
-void CPU::op_ld_a_r16mem() {}
+void CPU::op_ld_a_r16mem(uint16_t addr) { regs.a = mmu.read(addr); }
 
-void CPU::op_ld_imm16mem_sp() {}
+void CPU::op_ld_imm16mem_sp(uint16_t addr) {
+  mmu.write(addr, regs.sp & 0xff);
+  mmu.write(addr + 1, regs.sp >> 8);
+}
 
-void CPU::op_inc_r16() {}
+void CPU::op_inc_r16(uint16_t &reg) { reg++; }
 
-void CPU::op_dec_r16() {}
+void CPU::op_dec_r16(uint16_t &reg) { reg--; }
 
-void CPU::op_add_hl_r16() {}
+void CPU::op_add_hl_r16(uint16_t &reg) { regs.hl = reg; }
 
-void CPU::op_inc_r8() {}
+void CPU::op_inc_r8(uint8_t &reg) {
+  uint8_t result = reg + 1;
+  setFlag(FLAG_Z, result == 0);
+  setFlag(FLAG_H, (reg & 0x0F) == 0x0F);
+  setFlag(FLAG_N, 0);
+  reg = result;
+}
 
-void CPU::op_dec_r8() {}
+void CPU::op_dec_r8(uint8_t &reg) {
+  uint8_t original = reg;
+  reg--;
+  setFlag(FLAG_Z, reg == 0);
+  setFlag(FLAG_H, (original & 0x0F) == 0x0);
+  setFlag(FLAG_N, 1);
+}
 
-void CPU::op_ld_r8_imm8() {}
+void CPU::op_ld_r8_imm8(uint8_t &reg) { reg = mmu.read(regs.pc); }
 
-void CPU::op_rlca() {}
+void CPU::op_rlca() {
+  bool msb = (regs.a >> 7) & 1;
+  setFlag(FLAG_H, 0);
+  setFlag(FLAG_Z, 0);
+  setFlag(FLAG_N, 0);
+  setFlag(FLAG_C, msb);
+  regs.a <<= 1;
+  regs.a |= msb;
+}
 
 void CPU::op_rrca() {}
 
