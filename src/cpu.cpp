@@ -65,6 +65,30 @@ void CPU::initOpCodeTable() {
   opcodes[0x08] = {"LD [imm16], SP", 3, 20, 0,
                    [this] { op_ld_imm16mem_sp(fetchWord()); }};
   opcodes[0x09] = {"ADD HL, BC", 1, 8, 0, [this] { op_add_hl_r16(regs.bc); }};
+  opcodes[0x0A] = {"LD A, [BC]", 1, 8, 0, [this] { op_ld_a_r16mem(regs.bc); }};
+  opcodes[0x0B] = {"DEC BC", 1, 8, 0, [this] { op_dec_r16(regs.bc); }};
+  opcodes[0x0C] = {"INC C", 1, 4, 0, [this] { op_inc_r8(regs.c); }};
+  opcodes[0x0D] = {"DEC C", 1, 4, 0, [this] { op_dec_r8(regs.c); }};
+  opcodes[0x0E] = {"LD C, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.c); }};
+  opcodes[0x0F] = {"RRCA", 1, 4, 0, [this] { op_rrca(); }};
+
+  opcodes[0x10] = {"STOP imm8", 2, 4, 0, [this] { op_stop(); }};
+  opcodes[0x11] = {"LD DE, imm16", 3, 12, 0,
+                   [this] { op_ld_r16_imm16(regs.de); }};
+  opcodes[0x12] = {"LD [DE], A", 1, 8, 0, [this] { op_ld_r16mem_a(regs.de); }};
+  opcodes[0x13] = {"INC DE", 1, 8, 0, [this] { op_inc_r16(regs.de); }};
+  opcodes[0x14] = {"INC D", 1, 4, 0, [this] { op_inc_r8(regs.d); }};
+  opcodes[0x15] = {"DEC D", 1, 4, 0, [this] { op_dec_r8(regs.d); }};
+  opcodes[0x16] = {"LD D, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.d); }};
+  opcodes[0x17] = {"RLA", 1, 4, 0, [this] { op_rla(); }};
+  opcodes[0x18] = {"JR e8", 2, 12, 0, [this] { op_jr_imm8(); }};
+  opcodes[0x19] = {"ADD HL, DE", 1, 8, 0, [this] { op_add_hl_r16(regs.de); }};
+  opcodes[0x1A] = {"LD A, [DE]", 1, 8, 0, [this] { op_ld_a_r16mem(regs.de); }};
+  opcodes[0x1B] = {"DEC DE", 1, 8, 0, [this] { op_dec_r16(regs.de); }};
+  opcodes[0x1C] = {"INC E", 1, 4, 0, [this] { op_inc_r8(regs.e); }};
+  opcodes[0x1D] = {"DEC E", 1, 4, 0, [this] { op_dec_r8(regs.e); }};
+  opcodes[0x1E] = {"LD E, imm8", 2, 8, 0, [this] { op_ld_r8_imm8(regs.e); }};
+  opcodes[0x1F] = {"RRA", 1, 4, 0, [this] { op_rra(); }};
 }
 
 void CPU::op_nop() {}
@@ -121,11 +145,35 @@ void CPU::op_rlca() {
   regs.a |= msb;
 }
 
-void CPU::op_rrca() {}
+void CPU::op_rrca() {
+  bool lsb = regs.a & 1;
+  setFlag(FLAG_H, 0);
+  setFlag(FLAG_Z, 0);
+  setFlag(FLAG_N, 0);
+  setFlag(FLAG_C, lsb);
+  regs.a >>= 1;
+  regs.a |= (lsb << 7);
+}
 
-void CPU::op_rla() {}
+void CPU::op_rla() {
+  bool old_c = getFlag(FLAG_C);
+  setFlag(FLAG_H, 0);
+  setFlag(FLAG_Z, 0);
+  setFlag(FLAG_N, 0);
+  setFlag(FLAG_C, (regs.a >> 7) & 1);
+  regs.a <<= 1;
+  regs.a |= old_c;
+}
 
-void CPU::op_rra() {}
+void CPU::op_rra() {
+  bool old_c = getFlag(FLAG_C);
+  setFlag(FLAG_H, 0);
+  setFlag(FLAG_Z, 0);
+  setFlag(FLAG_N, 0);
+  setFlag(FLAG_C, regs.a & 1);
+  regs.a >>= 1;
+  regs.a |= (old_c << 7);
+}
 
 void CPU::op_daa() {}
 
@@ -135,11 +183,18 @@ void CPU::op_scf() {}
 
 void CPU::op_ccf() {}
 
-void CPU::op_jr_imm8() {}
+void CPU::op_jr_imm8() {
+  uint8_t e8 = fetchByte();
+  regs.pc += (int8_t)e8;
+}
 
 void CPU::op_jr_cond_imm8() {}
 
-void CPU::op_stop() {}
+void CPU::op_stop() {
+  fetchByte();
+  // TODO: check if I need a new state here
+  state.paused = true;
+}
 
 void CPU::op_ld_r8_r8() {}
 
