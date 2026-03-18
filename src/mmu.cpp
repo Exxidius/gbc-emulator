@@ -3,6 +3,7 @@
 MMU::MMU(PPU &ppu, Cartridge &cartridge, Joypad &joypad, Timer &timer, APU &apu)
     : ppu(ppu), cartridge(cartridge), joypad(joypad), timer(timer), apu(apu) {}
 
+// TODO: create MMU::peek for debugging
 uint8_t MMU::read(uint16_t addr) {
   if (addr <= 0x7FFF) {
     return cartridge.readROM(addr);

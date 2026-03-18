@@ -133,7 +133,7 @@ void CPU::op_dec_r8(uint8_t &reg) {
   setFlag(FLAG_N, 1);
 }
 
-void CPU::op_ld_r8_imm8(uint8_t &reg) { reg = mmu.read(regs.pc); }
+void CPU::op_ld_r8_imm8(uint8_t &reg) { reg = fetchByte(); }
 
 void CPU::op_rlca() {
   bool msb = (regs.a >> 7) & 1;
