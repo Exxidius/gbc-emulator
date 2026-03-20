@@ -10,7 +10,7 @@ public:
     uint8_t length;
     uint8_t cycles;
     uint8_t cycles_alt;
-    std::function<void()> handler;
+    std::function<bool()> handler;
   };
 
   CPUState state;
@@ -34,82 +34,82 @@ private:
 
   void initOpCodeTable();
 
-  void op_nop();
+  bool op_nop();
 
-  void op_ld_r16_imm16(uint16_t &reg);
-  void op_ld_r16mem_a(uint16_t addr);
-  void op_ld_a_r16mem(uint16_t addr);
-  void op_ld_imm16mem_sp(uint16_t addr);
+  bool op_ld_r16_imm16(uint16_t &reg);
+  bool op_ld_r16mem_a(uint16_t addr);
+  bool op_ld_a_r16mem(uint16_t addr);
+  bool op_ld_imm16mem_sp(uint16_t addr);
 
-  void op_inc_r16(uint16_t &reg);
-  void op_dec_r16(uint16_t &reg);
-  void op_add_hl_r16(uint16_t &reg);
+  bool op_inc_r16(uint16_t &reg);
+  bool op_dec_r16(uint16_t &reg);
+  bool op_add_hl_r16(uint16_t &reg);
 
-  void op_inc_r8(uint8_t &reg);
-  void op_dec_r8(uint8_t &reg);
+  bool op_inc_r8(uint8_t &reg);
+  bool op_dec_r8(uint8_t &reg);
 
-  void op_ld_r8_imm8(uint8_t &reg);
+  bool op_ld_r8_imm8(uint8_t &reg);
 
-  void op_rlca();
-  void op_rrca();
-  void op_rla();
-  void op_rra();
-  void op_daa();
-  void op_cpl();
-  void op_scf();
-  void op_ccf();
+  bool op_rlca();
+  bool op_rrca();
+  bool op_rla();
+  bool op_rra();
+  bool op_daa();
+  bool op_cpl();
+  bool op_scf();
+  bool op_ccf();
 
-  void op_jr_imm8();
-  void op_jr_cond_imm8();
+  bool op_jr_imm8();
+  bool op_jr_cond_imm8();
 
-  void op_stop();
+  bool op_stop();
 
-  void op_ld_r8_r8();
+  bool op_ld_r8_r8();
 
-  void op_halt();
+  bool op_halt();
 
-  void op_add_a_r8();
-  void op_adc_a_r8();
-  void op_sub_a_r8();
-  void op_sbc_a_r8();
-  void op_and_a_r8();
-  void op_xor_a_r8();
-  void op_or_a_r8();
-  void op_cp_a_r8();
+  bool op_add_a_r8();
+  bool op_adc_a_r8();
+  bool op_sub_a_r8();
+  bool op_sbc_a_r8();
+  bool op_and_a_r8();
+  bool op_xor_a_r8();
+  bool op_or_a_r8();
+  bool op_cp_a_r8();
 
-  void op_add_a_imm8();
-  void op_adc_a_imm8();
-  void op_sub_a_imm8();
-  void op_sbc_a_imm8();
-  void op_and_a_imm8();
-  void op_xor_a_imm8();
-  void op_or_a_imm8();
-  void op_cp_a_imm8();
+  bool op_add_a_imm8();
+  bool op_adc_a_imm8();
+  bool op_sub_a_imm8();
+  bool op_sbc_a_imm8();
+  bool op_and_a_imm8();
+  bool op_xor_a_imm8();
+  bool op_or_a_imm8();
+  bool op_cp_a_imm8();
 
-  void op_ret_cond();
-  void op_ret();
-  void op_reti();
-  void op_jp_cond_imm16();
-  void op_jp_imm16();
-  void op_jp_hl();
-  void op_call_cond_imm16();
-  void op_call_imm16();
-  void op_rst_tgt3();
+  bool op_ret_cond();
+  bool op_ret();
+  bool op_reti();
+  bool op_jp_cond_imm16();
+  bool op_jp_imm16();
+  bool op_jp_hl();
+  bool op_call_cond_imm16();
+  bool op_call_imm16();
+  bool op_rst_tgt3();
 
-  void op_pop_r16stk();
-  void op_push_r16stk();
+  bool op_pop_r16stk();
+  bool op_push_r16stk();
 
-  void op_ldh_c_a();
-  void op_ldh_imm8_a();
-  void op_ld_imm16_a();
-  void op_ldh_a_c();
-  void op_ldh_a_imm8();
-  void op_ld_a_imm16();
+  bool op_ldh_c_a();
+  bool op_ldh_imm8_a();
+  bool op_ld_imm16_a();
+  bool op_ldh_a_c();
+  bool op_ldh_a_imm8();
+  bool op_ld_a_imm16();
 
-  void op_add_sp_imm8();
-  void op_ld_hl_sp_imm8();
-  void op_ld_sp_hl();
+  bool op_add_sp_imm8();
+  bool op_ld_hl_sp_imm8();
+  bool op_ld_sp_hl();
 
-  void op_di();
-  void op_ei();
+  bool op_di();
+  bool op_ei();
 };
